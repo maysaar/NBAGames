@@ -8,8 +8,8 @@ DROP DATABASE IF EXISTS nba_data;
 CREATE DATABASE nba_data;
 USE nba_data;
 
-DROP TABLE IF EXISTS games_information;
-CREATE TABLE IF NOT EXISTS games_information (
+DROP TABLE IF EXISTS games_info;
+CREATE TABLE IF NOT EXISTS games_info (
 	game_date_est DATE DEFAULT NULL,
     game_id VARCHAR(10) DEFAULT NULL,
     game_status_text VARCHAR(10) DEFAULT NULL,
@@ -35,8 +35,9 @@ CREATE TABLE IF NOT EXISTS games_information (
 ENGINE = InnoDB;
 
 LOAD DATA
-	INFILE '/Applications/MAMP/db/mysql57/archive/games.csv'
-	INTO TABLE games_information
+    LOCAL
+	INFILE '/Users/ytan1/OneDrive/Documents/GitHub/NBAGames/data/games.csv'
+	INTO TABLE games_info
 	FIELDS 
 		TERMINATED BY ','
 	LINES 
@@ -44,8 +45,8 @@ LOAD DATA
 	IGNORE 1 LINES;
 
 
-DROP TABLE IF EXISTS games_details_information;
-CREATE TABLE IF NOT EXISTS games_details_information (
+DROP TABLE IF EXISTS games_details_info;
+CREATE TABLE IF NOT EXISTS games_details_info (
 	game_id VARCHAR(10) DEFAULT NULL,
     team_id VARCHAR(10) DEFAULT NULL, 
     team_abbreviation VARCHAR(3) DEFAULT NULL,
@@ -79,8 +80,9 @@ CREATE TABLE IF NOT EXISTS games_details_information (
 ENGINE = InnoDB;
 
 LOAD DATA
-	INFILE '/Applications/MAMP/db/mysql57/archive/games_details.csv'
-	INTO TABLE games_details_information
+    LOCAL
+	INFILE '/Users/ytan1/OneDrive/Documents/GitHub/NBAGames/data/games_details.csv'
+	INTO TABLE games_details_info
 	FIELDS 
 		TERMINATED BY ','
 	LINES 
@@ -88,8 +90,8 @@ LOAD DATA
 	IGNORE 1 LINES;
 
 
-DROP TABLE IF EXISTS players_information;
-CREATE TABLE IF NOT EXISTS players_information (
+DROP TABLE IF EXISTS players_info;
+CREATE TABLE IF NOT EXISTS players_info (
 	player_name VARCHAR(30) DEFAULT NULL,
     team_id VARCHAR(10) DEFAULT NULL, 
     player_id VARCHAR(10) DEFAULT NULL,
@@ -98,8 +100,9 @@ CREATE TABLE IF NOT EXISTS players_information (
 ENGINE = InnoDB;
 
 LOAD DATA
-	INFILE '/Applications/MAMP/db/mysql57/archive/players.csv'
-	INTO TABLE players_information
+    LOCAL
+	INFILE '/Users/ytan1/OneDrive/Documents/GitHub/NBAGames/data/players.csv'
+	INTO TABLE players_info
 	FIELDS 
 		TERMINATED BY ','
 	LINES 
@@ -107,8 +110,8 @@ LOAD DATA
 	IGNORE 1 LINES;
 
 
-DROP TABLE IF EXISTS ranking_information;
-CREATE TABLE IF NOT EXISTS ranking_information (
+DROP TABLE IF EXISTS ranking_info;
+CREATE TABLE IF NOT EXISTS ranking_info (
 	team_id VARCHAR(10) DEFAULT NULL, 
     league_id VARCHAR(3) DEFAULT NULL,
     season_id VARCHAR(5) DEFAULT NULL,
@@ -125,8 +128,9 @@ CREATE TABLE IF NOT EXISTS ranking_information (
 ENGINE = InnoDB;
 
 LOAD DATA
-	INFILE '/Applications/MAMP/db/mysql57/archive/ranking.csv'
-	INTO TABLE ranking_information
+    LOCAL
+	INFILE '/Users/ytan1/OneDrive/Documents/GitHub/NBAGames/data/ranking.csv'
+	INTO TABLE ranking_info
 	FIELDS 
 		TERMINATED BY ','
 	LINES 
