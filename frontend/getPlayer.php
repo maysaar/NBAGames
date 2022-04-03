@@ -2,7 +2,7 @@
     if (isset($_POST['field_submit'])) {
         require_once("conn.php");
         $var_player = $_POST['field_player'];
-        $query = "SELECT * FROM players_info;
+        $query = "SELECT * FROM players_info";
 
     try
         {
