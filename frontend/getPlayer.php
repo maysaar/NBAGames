@@ -2,7 +2,7 @@
     if (isset($_POST['field_submit'])) {
         require_once("conn.php");
         $var_player = $_POST['field_player'];
-        $query = "SELECT * FROM players_info WHERE player = :ph_player";
+        $query = "SELECT * FROM players_info;
 
     try
         {
@@ -59,10 +59,10 @@
                     <tbody>
                         <?php foreach ($result as $row) { ?>
                             <tr>
-                                <td><?php echo $row["PLAYER_NAME"]; ?></td>
-                                <td><?php echo $row["TEAM_ID"]; ?></td>
-                                <td><?php echo $row["PLAYER_ID"]; ?></td>
-                                <td><?php echo $row["SEASON"]; ?></td>
+                                <td><?php echo $row["player_name"]; ?></td>
+                                <td><?php echo $row["team_id"]; ?></td>
+                                <td><?php echo $row["player_id"]; ?></td>
+                                <td><?php echo $row["season"]; ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
