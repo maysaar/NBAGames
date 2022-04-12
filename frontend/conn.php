@@ -11,4 +11,3 @@ $dbname = 'nba_data'; //Database name
 $dbo = new PDO('mysql:host=' . $dbhost . ';port=8889;dbname=' . $dbname, $dbuname, $dbpass);
 
 ?>
-
