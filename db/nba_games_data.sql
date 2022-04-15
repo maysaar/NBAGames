@@ -139,6 +139,48 @@ FROM games_home;
 SELECT *
 FROM games_away;
 
+
+# Create mega table for players
+DROP TABLE IF EXISTS players_info;
+CREATE TABLE IF NOT EXISTS players_info (
+	player_name VARCHAR(30) DEFAULT NULL,
+    team_id VARCHAR(10) NOT NULL, 
+    player_id VARCHAR(10) NOT NULL,
+    season VARCHAR(5) NOT NULL
+)
+ENGINE = InnoDB;
+
+# Load data into players
+LOAD DATA
+    LOCAL
+	INFILE '/Applications/MAMP/db/mysql57/archive/players.csv'
+	INTO TABLE players_info
+	FIELDS 
+		TERMINATED BY ','
+	LINES 
+		TERMINATED BY '\n'
+	IGNORE 1 LINES;
+
+
+# Create players for 3NF compliance
+DROP TABLE IF EXISTS players;
+CREATE TABLE IF NOT EXISTS players (
+	player_name VARCHAR(30) DEFAULT NULL,
+    team_id VARCHAR(10) NOT NULL, 
+    player_id VARCHAR(10) NOT NULL,
+    season VARCHAR(5) NOT NULL,
+    PRIMARY KEY (player_id, team_id, season)
+)
+ENGINE = InnoDB;
+
+INSERT INTO players
+SELECT player_name,
+	   team_id,
+	   player_id,
+	   season
+FROM players_info;
+
+
 # Create mega table for games_details
 DROP TABLE IF EXISTS games_details_info;
 CREATE TABLE IF NOT EXISTS games_details_info (
@@ -244,46 +286,6 @@ SELECT game_id,
        pts,
        plus_minus
 FROM games_details_info;
-
-
-# Create mega table for players
-DROP TABLE IF EXISTS players_info;
-CREATE TABLE IF NOT EXISTS players_info (
-	player_name VARCHAR(30) DEFAULT NULL,
-    team_id VARCHAR(10) NOT NULL, 
-    player_id VARCHAR(10) NOT NULL,
-    season VARCHAR(5) NOT NULL
-)
-ENGINE = InnoDB;
-
-# Load data into players
-LOAD DATA
-    LOCAL
-	INFILE '/Applications/MAMP/db/mysql57/archive/players.csv'
-	INTO TABLE players_info
-	FIELDS 
-		TERMINATED BY ','
-	LINES 
-		TERMINATED BY '\n'
-	IGNORE 1 LINES;
-
-# Create players for 3NF compliance
-DROP TABLE IF EXISTS players;
-CREATE TABLE IF NOT EXISTS players (
-	player_name VARCHAR(30) DEFAULT NULL,
-    team_id VARCHAR(10) NOT NULL, 
-    player_id VARCHAR(10) NOT NULL,
-    season VARCHAR(5) NOT NULL,
-    PRIMARY KEY (player_id, team_id, season)
-)
-ENGINE = InnoDB;
-
-INSERT INTO players
-SELECT player_name,
-	   team_id,
-	   player_id,
-	   season
-FROM players_info;
 
 
 # Create mega table for ranking
@@ -576,7 +578,31 @@ CALL get_search_players('LeBron James');
 # view for when a user searches a player's games
 DROP VIEW IF EXISTS search_players_games;
 CREATE VIEW search_players_games AS
-SELECT player_name, team_name, season, game_date_est, start_position, comment, fgm, fga, fg_pct, fg3m, fg3a, fg3_pct, ftm, fta, ft_pct, oreb, dreb, reb, ast, stl, blk, to1, pf, pts, plus_minus
+SELECT player_name, 
+	   team_name, 
+       season, 
+       game_date_est, 
+       start_position, 
+       comment, 
+       fgm, 
+       fga, 
+       fg_pct, 
+       fg3m, 
+       fg3a, 
+       fg3_pct, 
+       ftm, 
+       fta, 
+       ft_pct, 
+       oreb, 
+       dreb, 
+       reb, 
+       ast, 
+       stl, 
+       blk, 
+       to1, 
+       pf, 
+       pts, 
+       plus_minus
 FROM games 
 	JOIN games_player_performance USING (game_id)
     JOIN teams ON teams.team_id = games.home_team_id;
@@ -595,7 +621,29 @@ BEGIN
 	DECLARE sql_error INT DEFAULT FALSE;
 	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET sql_error = TRUE;
 
-	SELECT team_name, game_date_est, start_position, comment, fgm, fga, fg_pct, fg3m, fg3a, fg3_pct, ftm, fta, ft_pct, oreb, dreb, reb, ast, stl, blk, to1, pf, pts, plus_minus
+	SELECT team_name, 
+		   game_date_est, 
+           start_position, 
+           comment, 
+           fgm, 
+           fga, 
+           fg_pct, 
+           fg3m, 
+           fg3a, 
+           fg3_pct, 
+           ftm, 
+           fta, 
+           ft_pct, 
+           oreb, 
+           dreb, 
+           reb, 
+           ast, 
+           stl, 
+           blk, 
+           to1, 
+           pf, 
+           pts, 
+           plus_minus
     FROM search_players_games
     WHERE player_name = player AND season = season_year;
 
@@ -609,7 +657,15 @@ CALL get_search_players_games('Ben Handlogten', '2003');
 # view for when a user searches a team
 DROP VIEW IF EXISTS search_teams;
 CREATE VIEW search_teams AS
-SELECT team_name, abbreviation, year_founded, city, arena, owner, general_manager, head_coach, d_league_affiliation
+SELECT team_name, 
+	   abbreviation, 
+       year_founded, 
+       city, 
+       arena, 
+       owner, 
+       general_manager, 
+       head_coach, 
+       d_league_affiliation
 FROM teams;
 
 -- test search_teams
@@ -626,7 +682,15 @@ BEGIN
 	DECLARE sql_error INT DEFAULT FALSE;
 	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET sql_error = TRUE;
 
-	SELECT team_name, abbreviation, year_founded, city, arena, owner, general_manager, head_coach, d_league_affiliation
+	SELECT team_name, 
+		   abbreviation, 
+           year_founded, 
+           city, 
+           arena, 
+           owner, 
+           general_manager, 
+           head_coach, 
+           d_league_affiliation
     FROM search_teams
     WHERE team_name = team;
 
@@ -640,7 +704,15 @@ CALL get_search_teams('Hawks');
 # view for when a user searches a team's rankings
 DROP VIEW IF EXISTS search_teams_rankings;
 CREATE VIEW search_teams_rankings AS
-SELECT team_name, SUBSTRING(season_id, 2, 4) AS season, standings_date, g, w, l, w_pct, home_record, road_record
+SELECT team_name, 
+	   SUBSTRING(season_id, 2, 4) AS season, 
+       standings_date, 
+       g, 
+       w, 
+       l, 
+       w_pct, 
+       home_record, 
+       road_record
 FROM teams
 	JOIN team_rankings USING (team_id);
 
