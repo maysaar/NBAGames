@@ -2,14 +2,7 @@
     if (isset($_POST['field_submit'])) {
         require_once("conn.php");
         $var_player = $_POST['field_player'];
-        //$query = "SELECT * FROM games JOIN games_info ON games.game_id = games_info.game_id WHERE team_id = (SELECT team_id FROM players WHERE player_name = :ph_player)";
-        // $query = "SELECT player_id FROM players WHERE player_name = :ph_player";
-        //$query = "SELECT * FROM games JOIN games_info ON games.game_id = games_info.game_id";
-        //$query = "SELECT * FROM games_details_info WHERE player_id = (SELECT player_id FROM players WHERE player_name = :ph_player)";
-        //(SELECT team_id FROM players_info WHERE player_name = :ph_player)
-        // $query = "SELECT player_id FROM players WHERE player_name = :ph_player";
-        // $query = "SELECT * FROM games_details_info WHERE player_id = (SELECT player_id FROM players WHERE player_name = :ph_player)";
-        $query = "SELECT * FROM games_details_info WHERE player_name = :ph_player";
+        $query = "SELECT * FROM players_info WHERE player_name = :ph_player";
         // $query = "CALL get_search_players(:ph_player)";
 
     try
@@ -65,17 +58,10 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Game ID</th>
-                            <th>Team</th>
-                            <th>Minutes</th>
-                            <th>FGM</th>
-                            <th>FGA</th>
-                            <th>FTM</th>
-                            <th>FTA</th>
-                            <th>REB</th>
-                            <th>AST</th>
-                            <th>PF</th>
-                            <th>PTS</th>
+                            <th>Name</th>
+                            <th>Player ID</th>
+                            <th>Team ID</th>
+                            <th>Season</th>
 
                         </tr>
                     </thead>
@@ -83,17 +69,10 @@
                     <tbody>
                         <?php foreach ($result as $row) { ?>
                             <tr>
-                                <td><?php echo $row["game_id"]; ?></td>
-                                <td><?php echo $row["team_abbreviation"]; ?></td>
-                                <td><?php echo $row["min"]; ?></td>
-                                <td><?php echo $row["fgm"]; ?></td>
-                                <td><?php echo $row["fga"]; ?></td>
-                                <td><?php echo $row["ftm"]; ?></td>
-                                <td><?php echo $row["fta"]; ?></td>
-                                <td><?php echo $row["reb"]; ?></td>
-                                <td><?php echo $row["ast"]; ?></td>
-                                <td><?php echo $row["pf"]; ?></td>
-                                <td><?php echo $row["pts"]; ?></td>
+                                <td><?php echo $row["player_name"]; ?></td>
+                                <td><?php echo $row["team_id"]; ?></td>
+                                <td><?php echo $row["player_id"]; ?></td>
+                                <td><?php echo $row["season"]; ?></td>
 
                             </tr>
                         <?php } ?>
