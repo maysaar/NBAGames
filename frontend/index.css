@@ -4,16 +4,19 @@ body{
     align-items: center;
     align-content: center;
     text-align: center;
+    background: whitesmoke;
+    margin: auto;
     }
     
     div#navbar {
      height: 40px;
-     width: 600px;
+     width: 700px;
      background-repeat:repeat-x;
      font-family: Arial, Helvetica, sans-serif;
-     background-color: whitesmoke;
+     background-color: white;
      align-items: center;
      align-content: center;
+     margin: auto;
      text-align: center;
     }
     
@@ -46,10 +49,15 @@ body{
       display: block;
       margin: 5px 0;
     }
+
+    thead {
+      color: blue;
+    }
     
     table {
       border-collapse: collapse;
       border-spacing: 0;
+      margin: auto;
     }
     
     td, th {
@@ -58,11 +66,17 @@ body{
     }
     
     h1{
+      margin-top: 50px;
         color:red;
+    }
+
+    h2 {
+      margin-top: 50px;
     }
     
     
     h3{
+      margin-top: 50px;
         color:#ff0000;
     
     }
@@ -70,14 +84,49 @@ body{
     footer{
         width:600px;
         border-top: dotted 1px;
+        margin: auto;
     }
     
     p{
         width: 600px;
+        margin: auto;
     }
 
     logo-nba{
       width: 600px;
+      margin: auto;
     }
 
+  input[type=text] {
+      padding:5px; 
+      border:2px solid blue; 
+      -webkit-border-radius: 5px;
+      border-radius: 5px;
+  }
   
+  input[type=text]:focus {
+      border-color:#333;
+  }
+
+  input[type=number] {
+    padding:5px; 
+    border:2px solid blue; 
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+input[type=number]:focus {
+    border-color:#333;
+}
+
+  
+  input[type=submit] {
+      padding:5px 15px; 
+      margin-top: 5px;
+      background:blue; 
+      color: white;
+      border:0 none;
+      cursor:pointer;
+      -webkit-border-radius: 5px;
+      border-radius: 5px; 
+  }
