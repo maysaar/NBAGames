@@ -575,6 +575,36 @@ END //
 DELIMITER ;
 
 
+DROP TABLE IF EXISTS updated_players;
+CREATE TABLE IF NOT EXISTS updated_players (
+	player_name VARCHAR(30) DEFAULT NULL,
+    team_id VARCHAR(10) NOT NULL, 
+    player_id VARCHAR(10) NOT NULL,
+    season VARCHAR(5) NOT NULL,
+    PRIMARY KEY (player_id, team_id, season)
+)
+ENGINE = InnoDB;
+
+# trigger when a player is updated
+DROP TRIGGER IF EXISTS player_before_update;
+DELIMITER //
+CREATE TRIGGER player_before_delete
+BEFORE UPDATE
+ON players
+FOR EACH ROW
+
+BEGIN
+
+	INSERT INTO updated_players
+	VALUES (OLD.player_name,
+			OLD.team_id,
+			OLD.player_id,
+			OLD.season);
+
+END //
+DELIMITER ;
+
+
 # view for when a user searches a player
 DROP VIEW IF EXISTS search_players;
 CREATE VIEW search_players AS
