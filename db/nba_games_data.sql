@@ -1,6 +1,6 @@
 -- Maysaa Rahman, Pei Tan
 -- maysaa.rahman@vanderbilt.edu, pei.shan.tan@vanderbilt.edu
--- NBA Games
+-- nba_games_data
 
 -- SET SESSION sql_mode = '';
 
@@ -134,6 +134,7 @@ SELECT game_id,
        reb_away
 FROM games_info;
 
+
 SELECT *
 FROM games_home;
 SELECT *
@@ -227,7 +228,6 @@ LOAD DATA
 		TERMINATED BY '\n'
 	IGNORE 1 LINES;
 
--- 22:50:32	LOAD DATA     LOCAL      INFILE '/Applications/MAMP/db/mysql57/archive/games_details.csv'  INTO TABLE games_details_info  FIELDS    TERMINATED BY ','  LINES    TERMINATED BY '\n'  IGNORE 1 LINES	645664 row(s) affected, 64 warning(s): 1262 Row 88654 was truncated; it contained more data than there were input columns 1262 Row 102262 was truncated; it contained more data than there were input columns 1262 Row 102572 was truncated; it contained more data than there were input columns 1262 Row 111080 was truncated; it contained more data than there were input columns 1262 Row 112126 was truncated; it contained more data than there were input columns 1265 Data truncated for column 'min' at row 116980 1265 Data truncated for column 'min' at row 116981 1265 Data truncated for column 'min' at row 116985 1265 Data truncated for column 'min' at row 116987 1265 Data truncated for column 'min' at row 116989 1265 Data truncated for column 'min' at row 116991 1265 Data truncated for column 'min' at row 116992 1265 Data truncated for column 'min' at row 116995 1265 Data truncated for column 'min' at row 116996 1265 Data truncated for column 'min' at row 117169 1265 Data truncated for column 'min' at row 117184 1265 Data truncated for column 'min' at row 117191 1262 Row 119126 was truncated; it contained more data than there were input columns 1262 Row 120555 was truncated; it contained more data than there were input columns 1262 Row 120919 was truncated; it contained more data than there were input columns 1262 Row 121244 was truncated; it contained more data than there were input columns 1262 Row 126389 was truncated; it contained more data than there were input columns 1262 Row 128955 was truncated; it contained more data than there were input columns 1262 Row 134488 was truncated; it contained more data than there were input columns 1262 Row 137463 was truncated; it contained more data than there were input columns 1262 Row 137905 was truncated; it contained more data than there were input columns 1262 Row 138216 was truncated; it contained more data than there were input columns 1262 Row 138658 was truncated; it contained more data than there were input columns 1262 Row 138998 was truncated; it contained more data than there were input columns 1262 Row 139213 was truncated; it contained more data than there were input columns 1262 Row 139214 was truncated; it contained more data than there were input columns 1262 Row 140258 was truncated; it contained more data than there were input columns 1262 Row 140259 was truncated; it contained more data than there were input columns 1262 Row 140342 was truncated; it contained more data than there were input columns 1262 Row 140343 was truncated; it contained more data than there were input columns 1262 Row 140604 was truncated; it contained more data than there were input columns 1262 Row 140606 was truncated; it contained more data than there were input columns 1262 Row 141523 was truncated; it contained more data than there were input columns 1262 Row 141524 was truncated; it contained more data than there were input columns 1262 Row 141822 was truncated; it contained more data than there were input columns 1262 Row 142146 was truncated; it contained more data than there were input columns 1262 Row 142556 was truncated; it contained more data than there were input columns 1262 Row 142940 was truncated; it contained more data than there were input columns 1262 Row 143276 was truncated; it contained more data than there were input columns 1262 Row 144019 was truncated; it contained more data than there were input columns 1262 Row 144223 was truncated; it contained more data than there were input columns 1262 Row 145063 was truncated; it contained more data than there were input columns 1262 Row 145555 was truncated; it contained more data than there were input columns 1262 Row 146087 was truncated; it contained more data than there were input columns 1262 Row 146520 was truncated; it contained more data than there were input columns 1262 Row 146628 was truncated; it contained more data than there were input columns 1265 Data truncated for column 'team_city' at row 153909 1265 Data truncated for column 'team_city' at row 153910 1265 Data truncated for column 'team_city' at row 153911 1265 Data truncated for column 'team_city' at row 153912 1265 Data truncated for column 'team_city' at row 153913 1265 Data truncated for column 'team_city' at row 153914 1265 Data truncated for column 'team_city' at row 153915 1265 Data truncated for column 'team_city' at row 153916 1265 Data truncated for column 'team_city' at row 153917 1265 Data truncated for column 'team_city' at row 153918 1265 Data truncated for column 'team_city' at row 153919 1265 Data truncated for column 'team_city' at row 153920 1262 Row 154014 was truncated; it contained more data than there were input columns Records: 645664  Deleted: 0  Skipped: 0  Warnings: 2505	2.276 sec
 
 # Create games_player_performance for 3NF compliance
 DROP TABLE IF EXISTS games_player_performance;
@@ -437,8 +437,8 @@ END //
 DELIMITER ;
 
 -- test for get_player_id
-CALL get_player_id('Andrew Bogut', @id);
-SELECT @id;
+-- CALL get_player_id('Andrew Bogut', @id);
+-- SELECT @id;
 
 
 # Stored procedure to get player_name
@@ -459,8 +459,8 @@ END //
 DELIMITER ;
 
 -- test for get_player_name
-CALL get_player_name('101106', @player);
-SELECT @player;
+-- CALL get_player_name('101106', @player);
+-- SELECT @player;
 
 
 # Stored procedure to get team_id
@@ -481,8 +481,8 @@ END //
 DELIMITER ;
 
 -- test for get_team_id
-CALL get_team_id('Hawks', @id);
-SELECT @id;
+-- CALL get_team_id('Hawks', @id);
+-- SELECT @id;
 
 
 # Stored procedure to get team_name
@@ -503,11 +503,20 @@ END //
 DELIMITER ;
 
 -- test for get_team_name
-CALL get_team_name('1610612737', @team);
-SELECT @team;
+-- CALL get_team_name('1610612737', @team);
+-- SELECT @team;
 
+DROP TABLE IF EXISTS inserted_players;
+CREATE TABLE IF NOT EXISTS inserted_players (
+	player_name VARCHAR(30) DEFAULT NULL,
+    team_id VARCHAR(10) NOT NULL, 
+    player_id VARCHAR(10) NOT NULL,
+    season VARCHAR(5) NOT NULL,
+    PRIMARY KEY (player_id, team_id, season)
+)
+ENGINE = InnoDB;
 
-# Trigger when a player is inserted
+# trigger when a player is inserted
 DROP TRIGGER IF EXISTS player_before_insert;
 DELIMITER //
 CREATE TRIGGER player_before_insert
@@ -517,6 +526,12 @@ FOR EACH ROW
 
 BEGIN
 
+	INSERT INTO inserted_players
+	VALUES (NEW.player_name,
+			NEW.team_id,
+			NEW.player_id,
+			NEW.season);
+            
 	INSERT INTO players
 	VALUES (NEW.player_name,
 			NEW.team_id,
@@ -526,20 +541,38 @@ BEGIN
 END //
 DELIMITER ;
 
+-- SELECT *
+-- FROM inserted_players;
 
--- trigger when a player is deleted
--- DROP TRIGGER IF EXISTS player_after_delete;
--- DELIMITER //
--- CREATE TRIGGER player_after_delete
--- AFTER DELETE
--- ON players_info
--- FOR EACH ROW
+DROP TABLE IF EXISTS deleted_players;
+CREATE TABLE IF NOT EXISTS deleted_players (
+	player_name VARCHAR(30) DEFAULT NULL,
+    team_id VARCHAR(10) NOT NULL, 
+    player_id VARCHAR(10) NOT NULL,
+    season VARCHAR(5) NOT NULL,
+    PRIMARY KEY (player_id, team_id, season)
+)
+ENGINE = InnoDB;
 
--- BEGIN
 
+# trigger when a player is deleted
+DROP TRIGGER IF EXISTS player_after_delete;
+DELIMITER //
+CREATE TRIGGER player_after_delete
+AFTER DELETE
+ON players
+FOR EACH ROW
 
--- END //
--- DELIMITER ;
+BEGIN
+
+	INSERT INTO deleted_players
+	VALUES (OLD.player_name,
+			OLD.team_id,
+			OLD.player_id,
+			OLD.season);
+
+END //
+DELIMITER ;
 
 
 # view for when a user searches a player
@@ -551,8 +584,8 @@ FROM players
 ORDER BY season DESC;
 
 -- test search_players
-SELECT *
-FROM search_players;
+-- SELECT *
+-- FROM search_players;
 
 
 # stored procedure outputting table for search players feature
@@ -572,7 +605,7 @@ END //
 DELIMITER ;
 
 -- test get_search_players
-CALL get_search_players('LeBron James');
+-- CALL get_search_players('LeBron James');
 
 
 # view for when a user searches a player's games
@@ -608,8 +641,8 @@ FROM games
     JOIN teams ON teams.team_id = games.home_team_id;
     
 -- test search_players_games
-SELECT *
-FROM search_players_games;
+-- SELECT *
+-- FROM search_players_games;
 
 
 # stored procedure outputting table for search player's games feature
@@ -651,7 +684,7 @@ END //
 DELIMITER ;
 
 -- test get_search_players_games
-CALL get_search_players_games('Ben Handlogten', '2003');
+-- CALL get_search_players_games('Ben Handlogten', '2003');
 
 
 # view for when a user searches a team
@@ -669,8 +702,8 @@ SELECT team_name,
 FROM teams;
 
 -- test search_teams
-SELECT *
-FROM search_teams;
+-- SELECT *
+-- FROM search_teams;
 
 
 # stored procedure outputting table for search teams feature
@@ -698,7 +731,7 @@ END //
 DELIMITER ;
 
 -- test get_search_teams
-CALL get_search_teams('Hawks');
+-- CALL get_search_teams('Hawks');
 
 
 # view for when a user searches a team's rankings
@@ -717,8 +750,8 @@ FROM teams
 	JOIN team_rankings USING (team_id);
 
 -- test search_team_rankings
-SELECT *
-FROM search_teams_rankings;
+-- SELECT *
+-- FROM search_teams_rankings;
 
 
 # stored procedure outputting table for search team's rankings feature
@@ -738,7 +771,7 @@ END //
 DELIMITER ;
 
 -- test get_search_teams_rankings
-CALL get_search_teams_rankings('Hawks', '2002');
+-- CALL get_search_teams_rankings('Hawks', '2002');
 
 
 # view for when a user searches a team's games
@@ -766,8 +799,8 @@ FROM games
     JOIN games_away USING (game_id);
     
 -- test search_teams_games
-SELECT *
-FROM search_teams_games;
+-- SELECT *
+-- FROM search_teams_games;
 
 
 # stored procedure outputting table for search team's games feature
@@ -802,6 +835,7 @@ BEGIN
 END //
 DELIMITER ;
 
+
 -- test get_search_teams_rankings
-CALL get_search_teams_games('Hawks', '2003');
+-- CALL get_search_teams_games('Hawks', '2003');
 
