@@ -67,7 +67,7 @@
 			
 			<img id="logobar" src="https://cdn.nba.com/logos/nba/nba-logoman-75-word_white.svg">
 			<a style="float:right" href="sourceList.html"> SOURCES </a>
-			<a style="float:right" href="matchPredictor.html">PREDICT</a>
+			<a style="float:right" href="matchPredictor.php">PREDICT</a>
 			<a style="float:right" href="index.html">WELCOME</a>
 		</div>
         <div id="searchbg">

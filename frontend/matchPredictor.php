@@ -1,13 +1,15 @@
 <?php
     if (isset($_POST['field_submit'])) {
         require_once("conn.php");
-        $var_player = $_POST['field_player'];
-        $query = "SELECT DISTINCT * FROM games_info WHERE game_id = :ph_player";
+        $var_teamone = $_POST['field_teamone'];
+        $var_teamone = $_POST['field_teamtwo'];
+        $query = "CALL match_predict(:ph_teamone, :ph_teamtwo)";
 
     try
         {
         $prepared_stmt = $dbo->prepare($query);
-        $prepared_stmt->bindValue(':ph_player', $var_player, PDO::PARAM_STR);
+        $prepared_stmt->bindValue(':ph_teamone', $var_teamone, PDO::PARAM_STR);
+        $prepared_stmt->bindValue(':ph_teamtwo', $var_teamtwo, PDO::PARAM_STR);
         $prepared_stmt->execute();
         $result = $prepared_stmt->fetchAll();
 
@@ -69,11 +71,13 @@
 		</div>
        
             <div id="searchbg">
-               <h1> Search for a match by ID </h1>
+               <h1> Predict which team will win a match </h1>
                <br/>
                 <form method="post">
-                    <label for="id_player">Enter the match id:</label>
-                    <input type="text" name="field_player" id = "id_player">
+                    <label for="id_teamone">Enter team 1's name</label>
+                    <input type="text" name="field_teamone" id = "id_teamone">
+                    <label for="id_teamtwo">Enter team 2's name</label>
+                    <input type="text" name="field_teamtwo" id = "id_teamtwo">
                     <br />
                     <input type="submit" name="field_submit" value="SUBMIT">
                 </form>
