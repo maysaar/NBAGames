@@ -9,8 +9,7 @@ if (isset($_POST['f_submit'])) {
     $var_player_id = $_POST['f_player_id'];
     $var_season= $_POST['f_season'];
 
-    $query = "INSERT INTO players_info (player_name, team_id, player_id, season) "
-            . "VALUES (:player_name, :team_id, :player_id, :season)";
+    $query = "UPDATE players_info SET team_id=:team_id, player_name=:player_name,season=:season WHERE player_id=:player_id";
 
     try
     {
@@ -81,7 +80,7 @@ if (isset($_POST['f_submit'])) {
 		</div>
 
 		<div id="searchbg">
-<h1> Add a player</h1>
+<h1> Update a player</h1>
 	<br/>
     <form method="post">
     	<label for="id_player_name">Player Name</label>
@@ -103,11 +102,11 @@ if (isset($_POST['f_submit'])) {
       if (isset($_POST['f_submit'])) {
         if ($result) { 
     ?>
-          <h3> Player data was inserted successfully. </h3>
+          <h3> Player data was updated successfully. <h3>
     <?php 
         } else { 
     ?>
-          <h3> Sorry, there was an error. Player data was not inserted. </h3>
+          <h3> Sorry, there was an error. Player data was not updated. </h3>
     <?php 
         }
       } 

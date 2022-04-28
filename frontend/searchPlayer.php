@@ -2,8 +2,7 @@
     if (isset($_POST['field_submit'])) {
         require_once("conn.php");
         $var_player = $_POST['field_player'];
-        // $query = "SELECT * FROM players_info WHERE player_name = :ph_player";
-        $query = "CALL get_search_players(:ph_player)";
+        $query = "SELECT DISTINCT player_name FROM players_info WHERE player_id = :ph_player";
 
     try
         {
@@ -70,10 +69,10 @@
 		</div>
        
             <div id="searchbg">
-               <h1> Search for a player's information </h1>
+               <h1> Search for a player by their ID </h1>
                <br/>
                 <form method="post">
-                    <label for="id_player">Enter the player's full name:</label>
+                    <label for="id_player">Enter the player's id:</label>
                     <input type="text" name="field_player" id = "id_player">
                     <br />
                     <input type="submit" name="field_submit" value="SUBMIT">
@@ -83,27 +82,9 @@
         if (isset($_POST['field_submit'])) {
             if ($result && $prepared_stmt->rowCount() > 0) { ?>
                 <div>
-                <h2><?php echo $_POST['field_player']; ?> has played for these teams: </h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Team Name</th>
-                            <th>Season</th>
-
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <?php foreach ($result as $row) { ?>
-                            <tr>
-                                <td><?php echo $row["team_name"]; ?></td>
-                                <td><?php echo $row["season"]; ?></td>
-
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-                </div>
+                <h3> The player name for <?php echo $_POST['field_player']; ?> is <?php foreach ($result as $row) { ?>
+                         <?php echo $row["player_name"]; ?>
+                        <?php } ?>. </h3>
                 <div id="spacer"></div>
             <?php } else { ?>
                 <div>

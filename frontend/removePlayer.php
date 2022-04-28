@@ -36,17 +36,18 @@ if (isset($_POST['field_submit'])) {
   <body>
      <!-- See the project.css file to see how is navbar stylized.-->
      <div class="navbar">
-			<img id="logobar" src="https://cdn.nba.com/logos/nba/nba-logoman-75-word_white.svg">
-			<a href="index.html">HOME</a>
 			<div class="dropdown">
 			  <button class="dropbtn">PLAYERS
 				<i class="fa fa-caret-down"></i>
 			  </button>
 				<div class="dropdown-content">
 					<a href="viewPlayer.php">PLAYER INFO</a>
+					<a href="getPlayerID.php">GET PLAYER ID</a>
+					<a href="searchPlayer.php">SEARCH PLAYER ID</a>
 					<a href="getPlayer.php">PLAYER MATCHES</a>
 					<a href="addPlayer.php">ADD A PLAYER</a>
 					<a href="removePlayer.php">REMOVE A PLAYER</a>
+					<a href="updatePlayer.php">UPDATE A PLAYER</a>
 				</div>
 			</div>
 			<div class="dropdown">
@@ -54,10 +55,10 @@ if (isset($_POST['field_submit'])) {
 				  <i class="fa fa-caret-down"></i>
 				</button>
 				<div class="dropdown-content">
-					<a href="getPlayer.php">TEAM MATCHES</a>
-					<a href="addPlayer.php">ADD TEAM</a>
-					<a href="removePlayer.php">REMOVE TEAM</a>
-					<a href="viewPlayer.php">TEAM INFO</a>
+					<a href="viewTeam.php">TEAM INFO</a>
+					<a href="getTeam.php">TEAM MATCHES</a>
+					<a href="getTeamID.php">GET TEAM ID</a>
+					<a href="searchTeam.php">SEARCH TEAM ID</a>
 				</div>
 			</div>
 			<div class="dropdown">
@@ -65,16 +66,20 @@ if (isset($_POST['field_submit'])) {
 				  <i class="fa fa-caret-down"></i>
 				</button>
 				<div class="dropdown-content">
-				  <a href="getPlayer.php">TEAM MATCHES</a>
-				  <a href="addPlayer.php">ADD MATCH</a>
-				  <a href="removePlayer.php">REMOVE MATCH</a>
-				  <a href="viewPlayer.php">MATCH INFO</a>
+				  <a href="getMatch.php">SEARCH MATCHES</a>
+				  <a href="addMatch.php">ADD MATCH</a>
+				  <a href="removeMatch.php">REMOVE MATCH</a>
 				</div>
 			</div>
-			<a href="matchPredictor.html">PREDICT</a>
+			
+			<img id="logobar" src="https://cdn.nba.com/logos/nba/nba-logoman-75-word_white.svg">
+			<a style="float:right" href="sourceList.html"> SOURCES </a>
+			<a style="float:right" href="matchPredictor.php">PREDICT</a>
+			<a style="float:right" href="index.html">WELCOME</a>
 		</div>
+    <div id="searchbg">
     <!-- See the project.css file to note h1 (Heading 1) is stylized.-->
-    <h1> Remove a Player </h1>
+    <h1> Remove a player </h1>
     <!-- This is the start of the form. This form has one text field and one button.
       See the project.css file to note how form is stylized.-->
     <form method="post">
@@ -88,12 +93,12 @@ if (isset($_POST['field_submit'])) {
       The name attribute is referred above on line 3 and line 63. -->
       <input type="submit" name="field_submit" value="Submit">
     </form>
-
+</div>
     <?php
       if (isset($_POST['field_submit'])) {
         if ($result) { 
     ?>
-          Player was deleted successfully.
+          <h3>Player was deleted successfully.</h3>
     <?php 
         } else { 
     ?>

@@ -1,16 +1,14 @@
 <?php
     if (isset($_POST['field_submit'])) {
         require_once("conn.php");
-        $var_player = $_POST['field_player'];
-        $var_season = $_POST['field_season'];
-        // $query = "SELECT * FROM games_details_info WHERE player_name = :ph_player";
-        $query = "CALL get_search_players_games(:ph_player, :ph_season)";
+        $var_team = $_POST['field_team'];
+        //$query = "SELECT * FROM teams_info WHERE city = :ph_team";
+        $query = "CALL get_search_teams(:ph_team)";
 
     try
         {
         $prepared_stmt = $dbo->prepare($query);
-        $prepared_stmt->bindValue(':ph_player', $var_player, PDO::PARAM_STR);
-        $prepared_stmt->bindValue(':ph_season', $var_season, PDO::PARAM_STR);
+        $prepared_stmt->bindValue(':ph_team', $var_team, PDO::PARAM_STR);
         $prepared_stmt->execute();
         $result = $prepared_stmt->fetchAll();
 
@@ -71,63 +69,36 @@
 			<a style="float:right" href="index.html">WELCOME</a>
 		</div>
         <div id="searchbg">
-        <h1> View a player's matches for a season</h1>
-        <br/>
+        <h1> Search for a team's information </h1>
+
         <form method="post">
-            <label for="id_player">Enter the player's full name:</label>
-            <input type="text" name="field_player" id = "id_player">
-            <label for="id_player">Enter the season:</label>
-            <input type="text" name="field_season" id = "id_season">
-            <br />
+            <label for="id_team">Enter the team's name:</label>
+            <input type="text" name="field_team" id = "id_team"><br />
             <input type="submit" name="field_submit" value="Submit">
         </form>
-        </div>
+</div>
         <?php
         if (isset($_POST['field_submit'])) {
             if ($result && $prepared_stmt->rowCount() > 0) { ?>
-                <h2>Results for <?php echo $_POST['field_player']; ?> </h2>
+                <h2>Results for <?php echo $_POST['field_team']; ?></h2>
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Team Name</th>
-                            <th>Game Date</th>
-                            <th>Game ID</th>
-                            <th>FGM</th>
-                            <th>FGA</th>
-                            <th>FTM</th>
-                            <th>FTA</th>
-                            <th>REB</th>
-                            <th>AST</th>
-                            <th>PF</th>
-                            <th>PTS</th>
-
-                        </tr>
-                    </thead>
-
                     <tbody>
                         <?php foreach ($result as $row) { ?>
-                            <tr>
-                                <td><?php echo $row["team_name"]; ?></td>
-                                <td><?php echo $row["game_date_est"]; ?></td>
-                                <td><?php echo $row["game_id"]; ?></td>
-                                <td><?php echo $row["fgm"]; ?></td>
-                                <td><?php echo $row["fga"]; ?></td>
-                                <td><?php echo $row["ftm"]; ?></td>
-                                <td><?php echo $row["fta"]; ?></td>
-                                <td><?php echo $row["reb"]; ?></td>
-                                <td><?php echo $row["ast"]; ?></td>
-                                <td><?php echo $row["pf"]; ?></td>
-                                <td><?php echo $row["pts"]; ?></td>
-
-                            </tr>
+                            <tr> <td><b>Team Name</b></td> <td><?php echo $row["team_name"]; ?></td> </tr>
+                            <tr> <td><b>Abbreviation</b></td><td><?php echo $row["abbreviation"]; ?></td></tr>
+                            <tr> <td><b>Year Founded</b></td><td><?php echo $row["year_founded"]; ?></td></tr>
+                            <tr> <td><b>City</b></td><td><?php echo $row["city"]; ?></td></tr>
+                            <tr> <td><b>Arena</b></td><td><?php echo $row["arena"]; ?></td></tr>
+                            <tr> <td><b>Owner</b></td><td><?php echo $row["owner"]; ?></td></tr>
+                            <tr> <td><b>General Manager</b></td><td><?php echo $row["general_manager"]; ?></td></tr>
+                            <tr> <td><b>Head Coach</b></td><td><?php echo $row["head_coach"]; ?></td></tr>
+                            <tr> <td><b>League Affiliation</b></td><td><?php echo $row["d_league_affiliation"]; ?></td></tr>
                         <?php } ?>
                     </tbody>
                 </table>
-    
+            <div id="spacer"></div>
             <?php } else { ?>
-                <h3> Sorry, no results found for player 
-                    <?php echo $_POST['field_player']; ?>
-                    for the season  <?php echo $_POST['field_season']?>. </h3>
+                <h3> Sorry, no results found for team <?php echo $_POST['field_team']; ?> . </h3>
             <?php }
         } ?>
     </body>

@@ -1,24 +1,19 @@
 <?php
-
-if (isset($_POST['f_submit'])) {
-
+// If the all the variables are set when the Submit button is clicked...
+if (isset($_POST['field_submit'])) {
+    // It will refer to conn.php file and will open a connection.
     require_once("conn.php");
-
-    $var_player_name = $_POST['f_player_name'];
-    $var_team_id = $_POST['f_team_id'];
-    $var_player_id = $_POST['f_player_id'];
-    $var_season= $_POST['f_season'];
-
-    $query = "INSERT INTO players_info (player_name, team_id, player_id, season) "
-            . "VALUES (:player_name, :team_id, :player_id, :season)";
-
+    // Will get the value typed in the form text field and save into variable
+    $var_gameid= $_POST['field_gameid'];
+    // Save the query into variable called $query. NOte that :title is a place holder
+    $query = "DELETE FROM games_info WHERE game_id = :ph_gameid";
+    
     try
     {
       $prepared_stmt = $dbo->prepare($query);
-      $prepared_stmt->bindValue(':player_name', $var_player_name, PDO::PARAM_STR);
-      $prepared_stmt->bindValue(':team_id', $var_team_id, PDO::PARAM_STR);
-      $prepared_stmt->bindValue(':player_id', $var_player_id, PDO::PARAM_STR);
-      $prepared_stmt->bindValue(':season', $var_season, PDO::PARAM_STR);
+      //bind the value saved in the variable $var_title to the place holder :title after //verifying (using PDO::PARAM_STR) that the user has typed a valid string.
+      $prepared_stmt->bindValue(':ph_gameid', $var_gameid, PDO::PARAM_STR);
+      //Execute the query and save the result in variable gameidd $result
       $result = $prepared_stmt->execute();
 
     }
@@ -31,13 +26,16 @@ if (isset($_POST['f_submit'])) {
 ?>
 
 <html>
+  <!-- Any thing inside the HEAD tags are not visible on page.-->
   <head>
     <!-- THe following is the stylesheet file. The CSS file decides look and feel -->
     <link rel="stylesheet" type="text/css" href="index.css" />
   </head> 
 
+  <!-- Everything inside the BODY tags are visible on page.-->
   <body>
-  <div class="navbar">
+     <!-- See the project.css file to see how is navbar stylized.-->
+     <div class="navbar">
 			<div class="dropdown">
 			  <button class="dropbtn">PLAYERS
 				<i class="fa fa-caret-down"></i>
@@ -79,40 +77,36 @@ if (isset($_POST['f_submit'])) {
 			<a style="float:right" href="matchPredictor.php">PREDICT</a>
 			<a style="float:right" href="index.html">WELCOME</a>
 		</div>
-
-		<div id="searchbg">
-<h1> Add a player</h1>
-	<br/>
+    <div id="searchbg">
+    <!-- See the project.css file to note h1 (Heading 1) is stylized.-->
+    <h1> Remove a match</h1>
+    <!-- This is the start of the form. This form has one text field and one button.
+      See the project.css file to note how form is stylized.-->
     <form method="post">
-    	<label for="id_player_name">Player Name</label>
-    	<input type="text" name="f_player_name" id="id_player_name"> 
 
-    	<label for="id_team_id">Team ID</label>
-    	<input type="text" name="f_team_id" id="id_team_id">
-
-    	<label for="id_player_id">Player Id</label>
-    	<input type="text" name="f_player_id" id="id_player_id">
-
-    	<label for="id_season">Season</label>
-    	<input type="text" name="f_season" id="id_season">
-    	<br/>
-    	<input type="submit" name="f_submit" value="Submit">
+      <label for="id_title">Match Id</label>
+      <!-- The input type is a text field. Note the gameid and id. The gameid attribute
+        is referred above on line 7. $var_title = $_POST['field_title']; -->
+      <input type="text" name="field_gameid" id="id_gameid">
+      <br />
+      <!-- The input type is a submit button. Note the gameid and value. The value attribute decides what will be dispalyed on Button. In this case the button shows Delete Movie.
+      The gameid attribute is referred above on line 3 and line 63. -->
+      <input type="submit" name="field_submit" value="Submit">
     </form>
 </div>
     <?php
-      if (isset($_POST['f_submit'])) {
+      if (isset($_POST['field_submit'])) {
         if ($result) { 
     ?>
-          <h3> Player data was inserted successfully. </h3>
+          <h3> Match was deleted successfully.</h3>
     <?php 
         } else { 
     ?>
-          <h3> Sorry, there was an error. Player data was not inserted. </h3>
+          <h3> Sorry, there was an error. Match data was not deleted. </h3>
     <?php 
         }
       } 
     ?>
-
 
     
   </body>

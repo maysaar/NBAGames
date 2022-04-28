@@ -1,16 +1,19 @@
 <?php
     if (isset($_POST['field_submit'])) {
         require_once("conn.php");
-        $var_player = $_POST['field_player'];
-        // $query = "SELECT * FROM players_info WHERE player_name = :ph_player";
-        $query = "CALL get_search_players(:ph_player)";
+        $var_teamone = $_POST['field_teamone'];
+        $var_teamtwo = $_POST['field_teamtwo'];
+        $query = "CALL match_predict(:ph_teamone, :ph_teamtwo)";
 
     try
         {
         $prepared_stmt = $dbo->prepare($query);
-        $prepared_stmt->bindValue(':ph_player', $var_player, PDO::PARAM_STR);
+        $prepared_stmt->bindValue(':ph_teamone', $var_teamone, PDO::PARAM_STR);
+        $prepared_stmt->bindValue(':ph_teamtwo', $var_teamtwo, PDO::PARAM_STR);
         $prepared_stmt->execute();
         $result = $prepared_stmt->fetchAll();
+        // $match_winner = $row['match_winner'];
+        // var_dump($match_winner);
 
         }
         catch (PDOException $ex)
@@ -70,44 +73,28 @@
 		</div>
        
             <div id="searchbg">
-               <h1> Search for a player's information </h1>
+               <h1> Predict which team will win a match </h1>
                <br/>
                 <form method="post">
-                    <label for="id_player">Enter the player's full name:</label>
-                    <input type="text" name="field_player" id = "id_player">
+                    <label for="id_teamone">Enter team 1's name</label>
+                    <input type="text" name="field_teamone" id = "id_teamone">
+                    <label for="id_teamtwo">Enter team 2's name</label>
+                    <input type="text" name="field_teamtwo" id = "id_teamtwo">
                     <br />
                     <input type="submit" name="field_submit" value="SUBMIT">
                 </form>
             </div>
-        <?php
-        if (isset($_POST['field_submit'])) {
-            if ($result && $prepared_stmt->rowCount() > 0) { ?>
-                <div>
-                <h2><?php echo $_POST['field_player']; ?> has played for these teams: </h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Team Name</th>
-                            <th>Season</th>
-
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <?php foreach ($result as $row) { ?>
-                            <tr>
-                                <td><?php echo $row["team_name"]; ?></td>
-                                <td><?php echo $row["season"]; ?></td>
-
-                            </tr>
+    
+            <?php
+            if (isset($_POST['field_submit'])) {
+                if ($result && $prepared_stmt->rowCount() > 0) { ?>
+                    <h2>The winner for <?php echo $_POST['field_teamone']; ?> vs <?php echo $_POST['field_teamtwo']; ?> is</h2>
+                    <?php foreach ($result as $row) { ?>
+                        <h1 style="color:red"><?php echo $row["team_name"]; ?></h1>
                         <?php } ?>
-                    </tbody>
-                </table>
-                </div>
-                <div id="spacer"></div>
             <?php } else { ?>
                 <div>
-                <h3> Sorry, no results found for player <?php echo $_POST['field_player']; ?>. </h3>
+                <h3> Sorry, there was an error calculating your output. </h3>
                 </div>
                 <div id="spacer"></div>
            <?php }
