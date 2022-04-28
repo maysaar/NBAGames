@@ -2,15 +2,9 @@
     if (isset($_POST['field_submit'])) {
         require_once("conn.php");
         $var_player = $_POST['field_player'];
-        //$query = "SELECT * FROM games JOIN games_info ON games.game_id = games_info.game_id WHERE team_id = (SELECT team_id FROM players WHERE player_name = :ph_player)";
-        // $query = "SELECT player_id FROM players WHERE player_name = :ph_player";
-        //$query = "SELECT * FROM games JOIN games_info ON games.game_id = games_info.game_id";
-        //$query = "SELECT * FROM games_details_info WHERE player_id = (SELECT player_id FROM players WHERE player_name = :ph_player)";
-        //(SELECT team_id FROM players_info WHERE player_name = :ph_player)
-        // $query = "SELECT player_id FROM players WHERE player_name = :ph_player";
-        // $query = "SELECT * FROM games_details_info WHERE player_id = (SELECT player_id FROM players WHERE player_name = :ph_player)";
+
         $query = "SELECT * FROM games_details_info WHERE player_name = :ph_player";
-        // $query = "CALL get_search_players(:ph_player)";
+        //$query = "CALL get_search_players(:ph_player)";
 
     try
         {
@@ -33,23 +27,47 @@
     </head> 
 
     <body>
-    <div id="navbar">
-			<ul>
-            <li><a href="index.html">HOME</a></li>
-		        <li><a href="getPlayer.php">PLAYERS</a></li>
-		        <li><a href="getTeam.php">TEAMS</a></li>
-                <li><a href="getMatch.php">MATCHES</a></li>
-				<li><a href="matchPredictor.html">PREDICT</a></li>
-		    </ul>
+    <div class="navbar">
+			<img id="logobar" src="https://cdn.nba.com/logos/nba/nba-logoman-75-word_white.svg">
+			<div id="navspacer"> </div>
+            <a href="index.html">HOME</a>
+			<div class="dropdown">
+			  <button class="dropbtn">PLAYERS
+				<i class="fa fa-caret-down"></i>
+			  </button>
+				<div class="dropdown-content">
+					<a href="viewPlayer.php">PLAYER INFO</a>
+					<a href="getPlayer.php">PLAYER MATCHES</a>
+					<a href="addPlayer.php">ADD A PLAYER</a>
+					<a href="removePlayer.php">REMOVE A PLAYER</a>
+				</div>
+			</div>
+			<div class="dropdown">
+				<button class="dropbtn">TEAMS
+				  <i class="fa fa-caret-down"></i>
+				</button>
+				<div class="dropdown-content">
+					<a href="getPlayer.php">TEAM MATCHES</a>
+					<a href="addPlayer.php">ADD TEAM</a>
+					<a href="removePlayer.php">REMOVE TEAM</a>
+					<a href="viewPlayer.php">TEAM INFO</a>
+				</div>
+			</div>
+			<div class="dropdown">
+				<button class="dropbtn">MATCHES
+				  <i class="fa fa-caret-down"></i>
+				</button>
+				<div class="dropdown-content">
+				  <a href="getPlayer.php">TEAM MATCHES</a>
+				  <a href="addPlayer.php">ADD MATCH</a>
+				  <a href="removePlayer.php">REMOVE MATCH</a>
+				  <a href="viewPlayer.php">MATCH INFO</a>
+				</div>
+			</div>
+			<a href="matchPredictor.html">PREDICT</a>
 		</div>
-        <div id="navbar">
-			<ul>
-				<li><a href="addPlayer.php">ADD PLAYER</a></li>
-				<li><a href="removePlayer.php">REMOVE PLAYER</a></li>
-                <li><a href="viewPlayer.php">PLAYER INFO</a></li>
-		    </ul>
-		</div>
-        <h1> Search for a player's information </h1>
+        <div id="bggrad"></div>
+        <h1> Search for a player's matches </h1>
 
         <form method="post">
             <label for="id_player">Enter the player's full name:</label>

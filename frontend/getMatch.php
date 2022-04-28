@@ -3,8 +3,8 @@
         require_once("conn.php");
         $var_team = $_POST['field_team'];
         $var_season = $_POST['field_season'];
-        $query = "SELECT * FROM games_info JOIN games USING game_id WHERE city = :ph_team AND season = :ph_season";
-        //$query = "CALL get_search_teams_games(:ph_team, :ph_season)";
+        // $query = "SELECT * FROM games_info JOIN games USING game_id WHERE city = :ph_team AND season = :ph_season";
+        $query = "CALL get_search_teams_games(:ph_team, :ph_season)";
 
     try
         {
@@ -28,27 +28,49 @@
     </head> 
 
     <body>
-    <div id="navbar">
-			<ul>
-            <li><a href="index.html">HOME</a></li>
-		        <li><a href="getPlayer.php">PLAYERS</a></li>
-		        <li><a href="getTeam.php">TEAMS</a></li>
-                <li><a href="getMatch.php">MATCHES</a></li>
-				<li><a href="matchPredictor.html">PREDICT</a></li>
-		    </ul>
-		</div>
-        <div id="navbar">
-			<ul>
-				<li><a href="addPlayer.php">ADD PLAYER</a></li>
-				<li><a href="removePlayer.php">REMOVE PLAYER</a></li>
-                <li><a href="viewPlayer.php">PLAYER INFO</a></li>
-		    </ul>
+    <div class="navbar">
+			<img id="logobar" src="https://cdn.nba.com/logos/nba/nba-logoman-75-word_white.svg">
+			<a href="index.html">HOME</a>
+			<div class="dropdown">
+			  <button class="dropbtn">PLAYERS
+				<i class="fa fa-caret-down"></i>
+			  </button>
+				<div class="dropdown-content">
+					<a href="viewPlayer.php">PLAYER INFO</a>
+					<a href="getPlayer.php">PLAYER MATCHES</a>
+					<a href="addPlayer.php">ADD A PLAYER</a>
+					<a href="removePlayer.php">REMOVE A PLAYER</a>
+				</div>
+			</div>
+			<div class="dropdown">
+				<button class="dropbtn">TEAMS
+				  <i class="fa fa-caret-down"></i>
+				</button>
+				<div class="dropdown-content">
+					<a href="getPlayer.php">TEAM MATCHES</a>
+					<a href="addPlayer.php">ADD TEAM</a>
+					<a href="removePlayer.php">REMOVE TEAM</a>
+					<a href="viewPlayer.php">TEAM INFO</a>
+				</div>
+			</div>
+			<div class="dropdown">
+				<button class="dropbtn">MATCHES
+				  <i class="fa fa-caret-down"></i>
+				</button>
+				<div class="dropdown-content">
+				  <a href="getPlayer.php">TEAM MATCHES</a>
+				  <a href="addPlayer.php">ADD MATCH</a>
+				  <a href="removePlayer.php">REMOVE MATCH</a>
+				  <a href="viewPlayer.php">MATCH INFO</a>
+				</div>
+			</div>
+			<a href="matchPredictor.html">PREDICT</a>
 		</div>
         
-        <h1> Search for a team's information </h1>
+        <h1> Search for a team's matches </h1>
 
         <form method="post">
-            <label for="id_team">Enter the team's city:</label>
+            <label for="id_team">Enter the team's mascot:</label>
             <input type="text" name="field_team" id = "id_team"><br />
             <label for="id_season">Enter the season:</label>
             <input type="text" name="field_season" id = "id_season"><br />
