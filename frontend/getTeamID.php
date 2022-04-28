@@ -31,10 +31,13 @@
 				<i class="fa fa-caret-down"></i>
 			  </button>
 				<div class="dropdown-content">
-					<a href="viewteam.php">PLAYER INFO</a>
-					<a href="getteam.php">PLAYER MATCHES</a>
-					<a href="addteam.php">ADD A PLAYER</a>
-					<a href="removeteam.php">REMOVE A PLAYER</a>
+					<a href="viewPlayer.php">PLAYER INFO</a>
+					<a href="getPlayerID.php">GET PLAYER ID</a>
+					<a href="searchPlayer.php">SEARCH PLAYER ID</a>
+					<a href="getPlayer.php">PLAYER MATCHES</a>
+					<a href="addPlayer.php">ADD A PLAYER</a>
+					<a href="removePlayer.php">REMOVE A PLAYER</a>
+					<a href="updatePlayer.php">UPDATE A PLAYER</a>
 				</div>
 			</div>
 			<div class="dropdown">
@@ -44,8 +47,8 @@
 				<div class="dropdown-content">
 					<a href="viewTeam.php">TEAM INFO</a>
 					<a href="getTeam.php">TEAM MATCHES</a>
-					<a href="addTeam.php">ADD TEAM</a>
-					<a href="removeTeam.php">REMOVE TEAM</a>
+					<a href="getTeamID.php">GET TEAM ID</a>
+					<a href="searchTeam.php">SEARCH TEAM ID</a>
 				</div>
 			</div>
 			<div class="dropdown">
@@ -69,7 +72,7 @@
                <h1> Search for a team's ID </h1>
                <br/>
                 <form method="post">
-                    <label for="id_team">Enter the team's mascot:</label>
+                    <label for="id_team">Enter the team's name:</label>
                     <input type="text" name="field_team" id = "id_team">
                     <br />
                     <input type="submit" name="field_submit" value="SUBMIT">

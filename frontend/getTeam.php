@@ -3,7 +3,7 @@
         require_once("conn.php");
         $var_team = $_POST['field_team'];
         $var_season = $_POST['field_season'];
-        // $query = "SELECT * FROM games_info JOIN games USING game_id WHERE city = :ph_team AND season = :ph_season";
+        //$query = "SELECT * FROM games_info JOIN games USING game_id WHERE city = :ph_team AND season = :ph_season";
         $query = "CALL get_search_teams_games(:ph_team, :ph_season)";
 
     try
@@ -35,9 +35,12 @@
 			  </button>
 				<div class="dropdown-content">
 					<a href="viewPlayer.php">PLAYER INFO</a>
+					<a href="getPlayerID.php">GET PLAYER ID</a>
+					<a href="searchPlayer.php">SEARCH PLAYER ID</a>
 					<a href="getPlayer.php">PLAYER MATCHES</a>
 					<a href="addPlayer.php">ADD A PLAYER</a>
 					<a href="removePlayer.php">REMOVE A PLAYER</a>
+					<a href="updatePlayer.php">UPDATE A PLAYER</a>
 				</div>
 			</div>
 			<div class="dropdown">
@@ -47,8 +50,8 @@
 				<div class="dropdown-content">
 					<a href="viewTeam.php">TEAM INFO</a>
 					<a href="getTeam.php">TEAM MATCHES</a>
-					<a href="addTeam.php">ADD TEAM</a>
-					<a href="removeTeam.php">REMOVE TEAM</a>
+					<a href="getTeamID.php">GET TEAM ID</a>
+					<a href="searchTeam.php">SEARCH TEAM ID</a>
 				</div>
 			</div>
 			<div class="dropdown">
@@ -67,17 +70,17 @@
 			<a style="float:right" href="matchPredictor.html">PREDICT</a>
 			<a style="float:right" href="index.html">WELCOME</a>
 		</div>
-        
+<div id="searchbg">
         <h1> Search for a team's matches </h1>
 
-        <form method="post">
-            <label for="id_team">Enter the team's mascot:</label>
-            <input type="text" name="field_team" id = "id_team"><br />
-            <label for="id_season">Enter the season:</label>
-            <input type="text" name="field_season" id = "id_season"><br />
-            <input type="submit" name="field_submit" value="Submit">
-        </form>
-        
+<form method="post">
+    <label for="id_team">Enter the team's mascot:</label>
+    <input type="text" name="field_team" id = "id_team"><br />
+    <label for="id_season">Enter the season:</label>
+    <input type="text" name="field_season" id = "id_season"><br />
+    <input type="submit" name="field_submit" value="Submit">
+</form>
+</div>
         <?php
         if (isset($_POST['field_submit'])) {
             if ($result && $prepared_stmt->rowCount() > 0) { ?>

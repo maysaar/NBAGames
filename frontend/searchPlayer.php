@@ -1,14 +1,13 @@
 <?php
     if (isset($_POST['field_submit'])) {
         require_once("conn.php");
-        $var_team = $_POST['field_team'];
-        //$query = "SELECT * FROM teams_info WHERE city = :ph_team";
-        $query = "CALL get_search_teams(:ph_team)";
+        $var_player = $_POST['field_player'];
+        $query = "SELECT DISTINCT player_name FROM players_info WHERE player_id = :ph_player";
 
     try
         {
         $prepared_stmt = $dbo->prepare($query);
-        $prepared_stmt->bindValue(':ph_team', $var_team, PDO::PARAM_STR);
+        $prepared_stmt->bindValue(':ph_player', $var_player, PDO::PARAM_STR);
         $prepared_stmt->execute();
         $result = $prepared_stmt->fetchAll();
 
@@ -68,38 +67,31 @@
 			<a style="float:right" href="matchPredictor.html">PREDICT</a>
 			<a style="float:right" href="index.html">WELCOME</a>
 		</div>
-        <div id="searchbg">
-        <h1> Search for a team's information </h1>
-
-        <form method="post">
-            <label for="id_team">Enter the team's name:</label>
-            <input type="text" name="field_team" id = "id_team"><br />
-            <input type="submit" name="field_submit" value="Submit">
-        </form>
-</div>
+       
+            <div id="searchbg">
+               <h1> Search for a player by their ID </h1>
+               <br/>
+                <form method="post">
+                    <label for="id_player">Enter the player's id:</label>
+                    <input type="text" name="field_player" id = "id_player">
+                    <br />
+                    <input type="submit" name="field_submit" value="SUBMIT">
+                </form>
+            </div>
         <?php
         if (isset($_POST['field_submit'])) {
             if ($result && $prepared_stmt->rowCount() > 0) { ?>
-                <h2>Results for <?php echo $_POST['field_team']; ?></h2>
-                <table>
-                    <tbody>
-                        <?php foreach ($result as $row) { ?>
-                            <tr> <td><b>Team Name</b></td> <td><?php echo $row["team_name"]; ?></td> </tr>
-                            <tr> <td><b>Abbreviation</b></td><td><?php echo $row["abbreviation"]; ?></td></tr>
-                            <tr> <td><b>Year Founded</b></td><td><?php echo $row["year_founded"]; ?></td></tr>
-                            <tr> <td><b>City</b></td><td><?php echo $row["city"]; ?></td></tr>
-                            <tr> <td><b>Arena</b></td><td><?php echo $row["arena"]; ?></td></tr>
-                            <tr> <td><b>Owner</b></td><td><?php echo $row["owner"]; ?></td></tr>
-                            <tr> <td><b>General Manager</b></td><td><?php echo $row["general_manager"]; ?></td></tr>
-                            <tr> <td><b>Head Coach</b></td><td><?php echo $row["head_coach"]; ?></td></tr>
-                            <tr> <td><b>League Affiliation</b></td><td><?php echo $row["d_league_affiliation"]; ?></td></tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-            <div id="spacer"></div>
+                <div>
+                <h3> The player name for <?php echo $_POST['field_player']; ?> is <?php foreach ($result as $row) { ?>
+                         <?php echo $row["player_name"]; ?>
+                        <?php } ?>. </h3>
+                <div id="spacer"></div>
             <?php } else { ?>
-                <h3> Sorry, no results found for team <?php echo $_POST['field_team']; ?> . </h3>
-            <?php }
+                <div>
+                <h3> Sorry, no results found for player <?php echo $_POST['field_player']; ?>. </h3>
+                </div>
+                <div id="spacer"></div>
+           <?php }
         } ?>
     </body>
 </html>
