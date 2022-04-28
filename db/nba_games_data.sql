@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS games_info (
     fg3_pct_away DECIMAL(4,3) DEFAULT NULL,
     ast_away VARCHAR(2) DEFAULT NULL,
     reb_away VARCHAR(2) DEFAULT NULL,
-    home_team_wins VARCHAR(2) DEFAULT NULL,
+    home_team_wins INT DEFAULT NULL,
     PRIMARY KEY (game_id)
 )
 ENGINE = InnoDB;
@@ -41,14 +41,14 @@ ENGINE = InnoDB;
 # Load data into games_info
 LOAD DATA
     LOCAL
-	INFILE 'C:/wamp64/www/NBAGames/data/games.csv'
+	INFILE '/Applications/MAMP/db/mysql57/archive/games.csv'
 	INTO TABLE games_info
 	FIELDS 
 		TERMINATED BY ','
 	LINES 
 		TERMINATED BY '\n'
 	IGNORE 1 LINES;
-    
+
 
 # Create games table for 3NF compliance
 DROP TABLE IF EXISTS games;
@@ -135,10 +135,10 @@ SELECT game_id,
 FROM games_info;
 
 
-SELECT *
-FROM games_home;
-SELECT *
-FROM games_away;
+-- SELECT *
+-- FROM games_home;
+-- SELECT *
+-- FROM games_away;
 
 
 # Create mega table for players
@@ -154,7 +154,7 @@ ENGINE = InnoDB;
 # Load data into players
 LOAD DATA
     LOCAL
-	INFILE 'C:/wamp64/www/NBAGames/data/players.csv'
+	INFILE '/Applications/MAMP/db/mysql57/archive/players.csv'
 	INTO TABLE players_info
 	FIELDS 
 		TERMINATED BY ','
@@ -220,7 +220,7 @@ ENGINE = InnoDB;
 # Load data into games_details
 LOAD DATA
     LOCAL 
-    INFILE 'C:/wamp64/www/NBAGames/data/games_details.csv'
+    INFILE '/Applications/MAMP/db/mysql57/archive/games_details.csv'
 	INTO TABLE games_details_info
 	FIELDS 
 		TERMINATED BY ','
@@ -309,7 +309,7 @@ ENGINE = InnoDB;
 # Load data into ranking_info
 LOAD DATA
     LOCAL
-	INFILE 'C:/wamp64/www/NBAGames/data/ranking.csv'
+	INFILE '/Applications/MAMP/db/mysql57/archive/ranking.csv'
 	INTO TABLE ranking_info
 	FIELDS 
 		TERMINATED BY ','
@@ -373,7 +373,7 @@ ENGINE = InnoDB;
 # Load data into teams_info
 LOAD DATA
     LOCAL
-	INFILE 'C:/wamp64/www/NBAGames/data/teams.csv'
+	INFILE '/Applications/MAMP/db/mysql57/archive/teams.csv'
 	INTO TABLE teams_info
 	FIELDS 
 		TERMINATED BY ','
@@ -870,12 +870,45 @@ BEGIN
 
 END //
 DELIMITER ;
+-- test get_search_teams_rankings
+-- CALL get_search_teams_games('Hawks', '2003');
+
+DROP PROCEDURE IF EXISTS win_calculator;
+DELIMITER //
+CREATE PROCEDURE win_calculator(IN team_home VARCHAR(20), IN team_away VARCHAR(20), OUT home_wins INT, OUT away_wins INT)
+BEGIN
+	DECLARE sql_error INT DEFAULT FALSE;
+	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET sql_error = TRUE;
+	CALL get_team_id(team_home, @id_home);
+	CALL get_team_id(team_away, @id_away);
+    
+    SELECT @id_home, @id_away;
+    
+	SELECT SUM(home_team_wins) 
+	FROM games_info 
+	WHERE home_team_id=@id_home AND away_team_id=@id_away;
+    
+    SET home_wins = (SELECT SUM(home_team_wins) 
+					 FROM games_info 
+                     WHERE home_team_id=@id_home AND visitor_team_id=@id_away);
+    SELECT home_wins;
+    SET away_wins = (SELECT COUNT(*) 
+					 FROM games_info 
+                     WHERE home_team_id=@id_home AND visitor_team_id=@id_away) - home_wins;
+	SELECT away_wins;
+END //
+DELIMITER ;
+
+# test for win_calculator
+-- CALL win_calculator('Lakers', 'Clippers', @home_wins, @away_wins);
+-- SELECT @home_wins, @away_wins;
+
 
 DROP PROCEDURE IF EXISTS match_predict;
 DELIMITER //
 CREATE PROCEDURE match_predict(IN team_one VARCHAR(20), IN team_two VARCHAR(20), OUT winner VARCHAR(20))
 BEGIN
-	DECLARE team_one_wins INT;
+    DECLARE team_one_wins INT;
     DECLARE team_two_wins INT;
 	DECLARE sql_error INT DEFAULT FALSE;
 	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET sql_error = TRUE;
@@ -886,29 +919,16 @@ BEGIN
 	SET team_one_wins = @team_one_wins_home + @team_one_wins_away;
     SET team_two_wins =  @team_two_wins_home + @team_two_wins_away;
 
-	IF(team_one_wins<team_two_wins)
-		SET winner=team_one;
+	IF team_one_wins < team_two_wins THEN
+		SET winner = team_two;
 	ELSE 
-		SET winner=team_two;
-	END
+		SET winner = team_one;
+	END IF;
+    
 END //
 DELIMITER ;
--- test get_search_teams_rankings
--- CALL get_search_teams_games('Hawks', '2003');
 
-DELIMITER ;
-
-DROP PROCEDURE IF EXISTS win_calculator;
-DELIMITER //
-CREATE PROCEDURE match_predict(IN team_home VARCHAR(20), IN team_away VARCHAR(20), OUT home_wins INT, OUT away_wins INT)
-BEGIN
-	DECLARE sql_error INT DEFAULT FALSE;
-	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET sql_error = TRUE;
-	CALL get_team_id(teamhome, @id_home);
-	CALL get_team_id(teamaway, @id_away);
-	
-    SET home_wins = (SELECT SUM(home_team_wins) FROM games_info WHERE team_id_home=@id_home AND team_id_away=@id_away);
-    SET away_wins = (SELECT COUNT(*) FROM games_info WHERE team_id_home=@id_home AND team_id_away=@id_away) - home_wins;
-END //
-DELIMITER ;
+# test match_predict
+CALL match_predict('Lakers', 'Clippers', @winner);
+SELECT @winner;
 
