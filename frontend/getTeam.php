@@ -88,6 +88,7 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Game ID</th>
                             <th>Game Date</th>
                             <th>Home Team ID</th>
                             <th>Home Points</th>
@@ -107,6 +108,7 @@
                     <tbody>
                         <?php foreach ($result as $row) { ?>
                             <tr>
+                                <td><?php echo $row["game_id"]; ?></td>
                                 <td><?php echo $row["game_date_est"]; ?></td>
                                 <td><?php echo $row["team_id_home"]; ?></td>
                                 <td><?php echo $row["pts_home"]; ?></td>
@@ -118,7 +120,6 @@
 								<td><?php echo $row["pts_away"]; ?></td>
                                 <td><?php echo $row["fg_pct_away"]; ?></td>
                                 <td><?php echo $row["ft_pct_away"]; ?></td>
-								<td><?php echo $row["pts_away"]; ?></td>
                                 <td><?php echo $row["ast_away"]; ?></td>
 								<td><?php echo $row["reb_away"]; ?></td>
                             </tr>
