@@ -810,6 +810,7 @@ DELIMITER ;
 DROP VIEW IF EXISTS search_teams_games;
 CREATE VIEW search_teams_games AS
 SELECT game_date_est,
+		game_id,
        game_status_text,
        season,
        team_id_home, 
@@ -848,6 +849,7 @@ BEGIN
     CALL get_team_id(team, @id);
 
 	SELECT game_date_est,
+			game_id,
 		   game_status_text, 
            team_id_home,
 		   pts_home, 
@@ -869,6 +871,44 @@ BEGIN
 END //
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS match_predict;
+DELIMITER //
+CREATE PROCEDURE match_predict(IN team_one VARCHAR(20), IN team_two VARCHAR(20), OUT winner VARCHAR(20))
+BEGIN
+	DECLARE team_one_wins INT;
+    DECLARE team_two_wins INT;
+	DECLARE sql_error INT DEFAULT FALSE;
+	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET sql_error = TRUE;
+    
+    CALL win_calculator(team_one, team_two, @team_one_wins_home, @team_two_wins_away);
+    CALL win_calculator(team_two, team_one, @team_two_wins_home, @team_one_wins_away);
 
+	SET team_one_wins = @team_one_wins_home + @team_one_wins_away;
+    SET team_two_wins =  @team_two_wins_home + @team_two_wins_away;
+
+	IF(team_one_wins<team_two_wins)
+		SET winner=team_one;
+	ELSE 
+		SET winner=team_two;
+	END
+END //
+DELIMITER ;
 -- test get_search_teams_rankings
 -- CALL get_search_teams_games('Hawks', '2003');
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS win_calculator;
+DELIMITER //
+CREATE PROCEDURE match_predict(IN team_home VARCHAR(20), IN team_away VARCHAR(20), OUT home_wins INT, OUT away_wins INT)
+BEGIN
+	DECLARE sql_error INT DEFAULT FALSE;
+	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET sql_error = TRUE;
+	CALL get_team_id(teamhome, @id_home);
+	CALL get_team_id(teamaway, @id_away);
+	
+    SET home_wins = (SELECT SUM(home_team_wins) FROM games_info WHERE team_id_home=@id_home AND team_id_away=@id_away);
+    SET away_wins = (SELECT COUNT(*) FROM games_info WHERE team_id_home=@id_home AND team_id_away=@id_away) - home_wins;
+END //
+DELIMITER ;
+
