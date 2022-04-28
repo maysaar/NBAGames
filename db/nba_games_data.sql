@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS games_info (
     home_team_wins VARCHAR(2) DEFAULT NULL,
     PRIMARY KEY (game_id)
 )
+
 ENGINE = InnoDB;
 
 # Load data into games_info
@@ -869,6 +870,7 @@ BEGIN
     WHERE (team_id_home = @id OR team_id_away = @id) AND season = season_year;
 
 END //
+
 DELIMITER ;
 
 DROP PROCEDURE IF EXISTS match_predict;
@@ -886,11 +888,13 @@ BEGIN
 	SET team_one_wins = @team_one_wins_home + @team_one_wins_away;
     SET team_two_wins =  @team_two_wins_home + @team_two_wins_away;
 
-	IF(team_one_wins<team_two_wins)
+	IF team_one_wins>team_two_wins THEN
 		SET winner=team_one;
+        SELECT DISTINCT team_name FROM teams WHERE team_id=@id_home;
 	ELSE 
 		SET winner=team_two;
-	END
+        SELECT DISTINCT team_name FROM teams WHERE team_id=@id_away;
+	END if;
 END //
 DELIMITER ;
 -- test get_search_teams_rankings
@@ -900,15 +904,18 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS win_calculator;
 DELIMITER //
-CREATE PROCEDURE match_predict(IN team_home VARCHAR(20), IN team_away VARCHAR(20), OUT home_wins INT, OUT away_wins INT)
+CREATE PROCEDURE win_calculator(IN team_home VARCHAR(20), IN team_away VARCHAR(20), OUT home_wins INT, OUT away_wins INT)
 BEGIN
+	DECLARE total INT;
 	DECLARE sql_error INT DEFAULT FALSE;
 	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET sql_error = TRUE;
-	CALL get_team_id(teamhome, @id_home);
-	CALL get_team_id(teamaway, @id_away);
+	CALL get_team_id(team_home, @id_home);
+	CALL get_team_id(team_away, @id_away);
 	
-    SET home_wins = (SELECT SUM(home_team_wins) FROM games_info WHERE team_id_home=@id_home AND team_id_away=@id_away);
-    SET away_wins = (SELECT COUNT(*) FROM games_info WHERE team_id_home=@id_home AND team_id_away=@id_away) - home_wins;
+    SET home_wins = (SELECT COUNT(*) FROM games_info WHERE team_id_home=@id_home AND team_id_away=@id_away AND home_team_wins=1);
+    SET away_wins = (SELECT COUNT(*) FROM games_info WHERE team_id_home=@id_home AND team_id_away=@id_away AND home_team_wins=0);
 END //
 DELIMITER ;
 
+CALL match_predict("Celtics","Knicks",@result);
+SELECT @result;

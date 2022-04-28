@@ -75,6 +75,19 @@ input[type=submit] {
     font-size: 20;
 }
 
+input[type="date"] {
+  align-items: center;
+  /* display: -webkit-inline-flex; */
+  font-family: Arial;
+  font-size: 12;
+  overflow: hidden;
+  padding: 10px;
+  -webkit-padding-start: 1px;
+  border:2px solid blue; 
+}
+  
+
+  
   /* Navbar container */
 .navbar {
   overflow: hidden;

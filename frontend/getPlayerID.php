@@ -69,7 +69,7 @@
 		</div>
        
             <div id="searchbg">
-               <h1> Search for a player's ID </h1>
+               <h1> Get a player's ID </h1>
                <br/>
                 <form method="post">
                     <label for="id_player">Enter the player's full name:</label>

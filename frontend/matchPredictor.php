@@ -2,7 +2,7 @@
     if (isset($_POST['field_submit'])) {
         require_once("conn.php");
         $var_teamone = $_POST['field_teamone'];
-        $var_teamone = $_POST['field_teamtwo'];
+        $var_teamtwo = $_POST['field_teamtwo'];
         $query = "CALL match_predict(:ph_teamone, :ph_teamtwo)";
 
     try
@@ -12,6 +12,8 @@
         $prepared_stmt->bindValue(':ph_teamtwo', $var_teamtwo, PDO::PARAM_STR);
         $prepared_stmt->execute();
         $result = $prepared_stmt->fetchAll();
+        // $match_winner = $row['match_winner'];
+        // var_dump($match_winner);
 
         }
         catch (PDOException $ex)
@@ -86,50 +88,13 @@
             <?php
             if (isset($_POST['field_submit'])) {
                 if ($result && $prepared_stmt->rowCount() > 0) { ?>
-                    <h2>Results for <?php echo $_POST['field_player']; ?></h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Game Date</th>
-                                <th>Home Team ID</th>
-                                <th>Home Points</th>
-                                <th>Home FG</th>
-                                <th>Home FT</th>
-                                <th>Home Ast</th>
-                                <th>Home Reb</th>
-                                <th>Away Team ID</th>
-                                <th>Away Points</th>
-                                <th>Away FG</th>
-                                <th>Away FT</th>
-                                <th>Away Ast</th>
-                                <th>Away Reb</th>
-                            </tr>
-                        </thead>
-    
-                        <tbody>
-                            <?php foreach ($result as $row) { ?>
-                                <tr>
-                                    <td><?php echo $row["game_date_est"]; ?></td>
-                                    <td><?php echo $row["team_id_home"]; ?></td>
-                                    <td><?php echo $row["pts_home"]; ?></td>
-                                    <td><?php echo $row["fg_pct_home"]; ?></td>
-                                    <td><?php echo $row["ft_pct_home"]; ?></td>
-                                    <td><?php echo $row["ast_home"]; ?></td>
-                                    <td><?php echo $row["reb_home"]; ?></td>
-                                    <td><?php echo $row["team_id_away"]; ?></td>
-                                    <td><?php echo $row["pts_away"]; ?></td>
-                                    <td><?php echo $row["fg_pct_away"]; ?></td>
-                                    <td><?php echo $row["ft_pct_away"]; ?></td>
-                                    <td><?php echo $row["pts_away"]; ?></td>
-                                    <td><?php echo $row["ast_away"]; ?></td>
-                                    <td><?php echo $row["reb_away"]; ?></td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
+                    <h2>The winner for <?php echo $_POST['field_teamone']; ?> vs <?php echo $_POST['field_teamtwo']; ?> is</h2>
+                    <?php foreach ($result as $row) { ?>
+                        <h1 style="color:red"><?php echo $row["team_name"]; ?></h1>
+                        <?php } ?>
             <?php } else { ?>
                 <div>
-                <h3> Sorry, no results found for game ID <?php echo $_POST['field_player']; ?>. </h3>
+                <h3> Sorry, there was an error calculating your output. </h3>
                 </div>
                 <div id="spacer"></div>
            <?php }

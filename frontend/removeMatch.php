@@ -4,16 +4,16 @@ if (isset($_POST['field_submit'])) {
     // It will refer to conn.php file and will open a connection.
     require_once("conn.php");
     // Will get the value typed in the form text field and save into variable
-    $var_name= $_POST['field_name'];
+    $var_gameid= $_POST['field_gameid'];
     // Save the query into variable called $query. NOte that :title is a place holder
-    $query = "DELETE FROM games_info WHERE game_id = :ph_name";
+    $query = "DELETE FROM games_info WHERE game_id = :ph_gameid";
     
     try
     {
       $prepared_stmt = $dbo->prepare($query);
       //bind the value saved in the variable $var_title to the place holder :title after //verifying (using PDO::PARAM_STR) that the user has typed a valid string.
-      $prepared_stmt->bindValue(':name', $var_name, PDO::PARAM_STR);
-      //Execute the query and save the result in variable named $result
+      $prepared_stmt->bindValue(':ph_gameid', $var_gameid, PDO::PARAM_STR);
+      //Execute the query and save the result in variable gameidd $result
       $result = $prepared_stmt->execute();
 
     }
@@ -85,12 +85,12 @@ if (isset($_POST['field_submit'])) {
     <form method="post">
 
       <label for="id_title">Match Id</label>
-      <!-- The input type is a text field. Note the name and id. The name attribute
+      <!-- The input type is a text field. Note the gameid and id. The gameid attribute
         is referred above on line 7. $var_title = $_POST['field_title']; -->
-      <input type="text" name="field_name" id="id_name">
+      <input type="text" name="field_gameid" id="id_gameid">
       <br />
-      <!-- The input type is a submit button. Note the name and value. The value attribute decides what will be dispalyed on Button. In this case the button shows Delete Movie.
-      The name attribute is referred above on line 3 and line 63. -->
+      <!-- The input type is a submit button. Note the gameid and value. The value attribute decides what will be dispalyed on Button. In this case the button shows Delete Movie.
+      The gameid attribute is referred above on line 3 and line 63. -->
       <input type="submit" name="field_submit" value="Submit">
     </form>
 </div>
@@ -98,7 +98,7 @@ if (isset($_POST['field_submit'])) {
       if (isset($_POST['field_submit'])) {
         if ($result) { 
     ?>
-          <h3>Match was deleted successfully.</h3>
+          <h3> Match was deleted successfully.</h3>
     <?php 
         } else { 
     ?>

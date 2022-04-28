@@ -74,7 +74,7 @@
         <h1> Search for a team's matches </h1>
 
 <form method="post">
-    <label for="id_team">Enter the team's mascot:</label>
+    <label for="id_team">Enter the team's name:</label>
     <input type="text" name="field_team" id = "id_team"><br />
     <label for="id_season">Enter the season:</label>
     <input type="text" name="field_season" id = "id_season"><br />
