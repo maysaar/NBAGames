@@ -36,8 +36,6 @@ if (isset($_POST['field_submit'])) {
   <body>
      <!-- See the project.css file to see how is navbar stylized.-->
      <div class="navbar">
-			<img id="logobar" src="https://cdn.nba.com/logos/nba/nba-logoman-75-word_white.svg">
-			<a href="index.html">HOME</a>
 			<div class="dropdown">
 			  <button class="dropbtn">PLAYERS
 				<i class="fa fa-caret-down"></i>
@@ -54,10 +52,10 @@ if (isset($_POST['field_submit'])) {
 				  <i class="fa fa-caret-down"></i>
 				</button>
 				<div class="dropdown-content">
-					<a href="getPlayer.php">TEAM MATCHES</a>
-					<a href="addPlayer.php">ADD TEAM</a>
-					<a href="removePlayer.php">REMOVE TEAM</a>
-					<a href="viewPlayer.php">TEAM INFO</a>
+					<a href="viewTeam.php">TEAM INFO</a>
+					<a href="getTeam.php">TEAM MATCHES</a>
+					<a href="addTeam.php">ADD TEAM</a>
+					<a href="removeTeam.php">REMOVE TEAM</a>
 				</div>
 			</div>
 			<div class="dropdown">
@@ -65,13 +63,16 @@ if (isset($_POST['field_submit'])) {
 				  <i class="fa fa-caret-down"></i>
 				</button>
 				<div class="dropdown-content">
-				  <a href="getPlayer.php">TEAM MATCHES</a>
-				  <a href="addPlayer.php">ADD MATCH</a>
-				  <a href="removePlayer.php">REMOVE MATCH</a>
-				  <a href="viewPlayer.php">MATCH INFO</a>
+				  <a href="getMatch.php">SEARCH MATCHES</a>
+				  <a href="addMatch.php">ADD MATCH</a>
+				  <a href="removeMatch.php">REMOVE MATCH</a>
 				</div>
 			</div>
-			<a href="matchPredictor.html">PREDICT</a>
+			
+			<img id="logobar" src="https://cdn.nba.com/logos/nba/nba-logoman-75-word_white.svg">
+			<a style="float:right" href="sourceList.html"> SOURCES </a>
+			<a style="float:right" href="matchPredictor.html">PREDICT</a>
+			<a style="float:right" href="index.html">WELCOME</a>
 		</div>
     <!-- See the project.css file to note h1 (Heading 1) is stylized.-->
     <h1> Remove a Player </h1>
@@ -93,7 +94,7 @@ if (isset($_POST['field_submit'])) {
       if (isset($_POST['field_submit'])) {
         if ($result) { 
     ?>
-          Player was deleted successfully.
+          <h3>Player was deleted successfully.</h3>
     <?php 
         } else { 
     ?>

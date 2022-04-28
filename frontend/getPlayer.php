@@ -2,14 +2,15 @@
     if (isset($_POST['field_submit'])) {
         require_once("conn.php");
         $var_player = $_POST['field_player'];
-
-        $query = "SELECT * FROM games_details_info WHERE player_name = :ph_player";
-        //$query = "CALL get_search_players(:ph_player)";
+        $var_season = $_POST['field_season'];
+        // $query = "SELECT * FROM games_details_info WHERE player_name = :ph_player";
+        $query = "CALL get_search_players_games(:ph_player, :ph_season)";
 
     try
         {
         $prepared_stmt = $dbo->prepare($query);
         $prepared_stmt->bindValue(':ph_player', $var_player, PDO::PARAM_STR);
+        $prepared_stmt->bindValue(':ph_season', $var_season, PDO::PARAM_STR);
         $prepared_stmt->execute();
         $result = $prepared_stmt->fetchAll();
 
@@ -28,9 +29,6 @@
 
     <body>
     <div class="navbar">
-			<img id="logobar" src="https://cdn.nba.com/logos/nba/nba-logoman-75-word_white.svg">
-			<div id="navspacer"> </div>
-            <a href="index.html">HOME</a>
 			<div class="dropdown">
 			  <button class="dropbtn">PLAYERS
 				<i class="fa fa-caret-down"></i>
@@ -47,10 +45,10 @@
 				  <i class="fa fa-caret-down"></i>
 				</button>
 				<div class="dropdown-content">
-					<a href="getPlayer.php">TEAM MATCHES</a>
-					<a href="addPlayer.php">ADD TEAM</a>
-					<a href="removePlayer.php">REMOVE TEAM</a>
-					<a href="viewPlayer.php">TEAM INFO</a>
+					<a href="viewTeam.php">TEAM INFO</a>
+					<a href="getTeam.php">TEAM MATCHES</a>
+					<a href="addTeam.php">ADD TEAM</a>
+					<a href="removeTeam.php">REMOVE TEAM</a>
 				</div>
 			</div>
 			<div class="dropdown">
@@ -58,24 +56,29 @@
 				  <i class="fa fa-caret-down"></i>
 				</button>
 				<div class="dropdown-content">
-				  <a href="getPlayer.php">TEAM MATCHES</a>
-				  <a href="addPlayer.php">ADD MATCH</a>
-				  <a href="removePlayer.php">REMOVE MATCH</a>
-				  <a href="viewPlayer.php">MATCH INFO</a>
+				  <a href="getMatch.php">SEARCH MATCHES</a>
+				  <a href="addMatch.php">ADD MATCH</a>
+				  <a href="removeMatch.php">REMOVE MATCH</a>
 				</div>
 			</div>
-			<a href="matchPredictor.html">PREDICT</a>
+			
+			<img id="logobar" src="https://cdn.nba.com/logos/nba/nba-logoman-75-word_white.svg">
+			<a style="float:right" href="sourceList.html"> SOURCES </a>
+			<a style="float:right" href="matchPredictor.html">PREDICT</a>
+			<a style="float:right" href="index.html">WELCOME</a>
 		</div>
-        <div id="bggrad"></div>
-        <h1> Search for a player's matches </h1>
-
+        <div id="searchbg">
+        <h1> View a player's matches for a season</h1>
+        <br/>
         <form method="post">
             <label for="id_player">Enter the player's full name:</label>
             <input type="text" name="field_player" id = "id_player">
+            <label for="id_player">Enter the season:</label>
+            <input type="text" name="field_season" id = "id_season">
             <br />
             <input type="submit" name="field_submit" value="Submit">
         </form>
-        
+        </div>
         <?php
         if (isset($_POST['field_submit'])) {
             if ($result && $prepared_stmt->rowCount() > 0) { ?>
@@ -83,9 +86,9 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Team Name</th>
+                            <th>Game Date</th>
                             <th>Game ID</th>
-                            <th>Team</th>
-                            <th>Minutes</th>
                             <th>FGM</th>
                             <th>FGA</th>
                             <th>FTM</th>
@@ -101,9 +104,9 @@
                     <tbody>
                         <?php foreach ($result as $row) { ?>
                             <tr>
+                                <td><?php echo $row["team_name"]; ?></td>
+                                <td><?php echo $row["game_date_est"]; ?></td>
                                 <td><?php echo $row["game_id"]; ?></td>
-                                <td><?php echo $row["team_abbreviation"]; ?></td>
-                                <td><?php echo $row["min"]; ?></td>
                                 <td><?php echo $row["fgm"]; ?></td>
                                 <td><?php echo $row["fga"]; ?></td>
                                 <td><?php echo $row["ftm"]; ?></td>
@@ -119,7 +122,9 @@
                 </table>
     
             <?php } else { ?>
-                <h3> Sorry, no results found for player <?php echo $_POST['field_player']; ?>. </h3>
+                <h3> Sorry, no results found for player 
+                    <?php echo $_POST['field_player']; ?>
+                    for the season  <?php echo $_POST['field_season']?>. </h3>
             <?php }
         } ?>
     </body>
